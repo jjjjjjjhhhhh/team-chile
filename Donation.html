@@ -146,6 +146,10 @@ function handleSearch1 (form) {
     if (GIVER === null || GIVER === undefined || GIVER === '') {
         return alert('No GIVER')
     }
+    if (AMOUNT < 5) {
+        return alert('The minimum donation amount is 5 Australian dollars')
+
+    }
     let params = {
         AMOUNT: AMOUNT,
         GIVER: GIVER,
@@ -165,6 +169,7 @@ function addDonation(params) {
                 let data = JSON.parse(xhr.responseText);
                 if (data.code === 200) {
                     alert('Thank you for your donation')
+                     window.location.href = `./Detail.html?id=${FUNDRAISER_ID}`
                 } else{
                     alert(data.data)
                 }

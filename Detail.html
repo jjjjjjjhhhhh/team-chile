@@ -119,6 +119,16 @@
         flex-direction: column;
 
     }
+    .content3{
+        /* width: 1200px; */
+        /* background-color: #70777d; */
+        color:#666;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+    }
     .text1{
         width: 1200px;
         border-bottom: 1px solid #666;
@@ -146,6 +156,10 @@
             <div class="text">
 
             </div>
+        </div>
+
+        <div class="content3">
+     
         </div>
     </div>
 </body>
@@ -184,6 +198,22 @@ function getInfo(id) {
             }
         };
 }
+function getDonationList(id) {
+    var xhr = new XMLHttpRequest();
+        xhr.open('GET',url + `/getDonationData?FUNDRAISER_ID=${id}`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                data = JSON.parse(xhr.responseText);
+                console.log(data)
+                addDonation(data.data)   
+            } else {
+                console.error('请求失败');
+            }
+        };
+}
+
 function changeButton() {
     console.log(data);
     
@@ -230,7 +260,32 @@ function addContentData(data) {
         content.innerHTML = str
     }
 
+function addDonation(data) {
+    let content = document.querySelector('.content3');
+    let center1 = document.querySelector('.text')
+     let str = ''
+     data.forEach(item => {
+            str += `        <div style="display: flex; width: 1200px; justify-content: space-around;">
+                <div>
+                    GIVER:<span class="main-value">${item.GIVER}</span>
+                </div>
+                <div>
+                    AMOUNT:<span class="main-value">${item.AMOUNT}$</span>
+                </div>
+                <div>
+                    DATE:<span class="main-value">${item.DATE}</span>
+                </div>
+            </div>
+                   <div class="text1">
+            
+            </div>
+            `
+        })
+        content.innerHTML = str
+}
+
     getInfo(id)
+    getDonationList(id)
 </script>
 
 
