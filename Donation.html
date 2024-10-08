@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        margin: 0 0;
+        padding: 0 0;
+    }
+    .top{
+        height: 80px;
+        background-image: url('./image/top.jpg');
+        background-size: 100% auto;
+        position: relative;
+    }
+    .logo{
+        height: 50px;
+        position: absolute;
+        left: 50px;
+        top: 15px;
+    }
+    .content{
+        /* width: 300px; */
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .content-wrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+    .left {
+        /* flex: 1; */
+    }
+    .main {
+        /* flex: 1; */
+        width: 700px;
+        padding-left: 20px;
+        line-height: 50px;
+    }
+    .left-image{
+        height: 220px;
+        width: 400px;
+    }
+    .main-title{
+        font-size: 22px;
+    }
+    .main-value{
+        color: red;
+    }
+    .main-content{
+        line-height: 30px;
+        font-size: 16px;
+        color: #666;
+    }
+    .main-amount{
+        display: flex;
+    }
+    .main-amount-flex{
+        flex: 1;
+    }
+    .Search{
+        float: right;
+        padding-top: 20px;
+        padding-right: 50px;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+    }
+    form label, form input {
+    margin-bottom: 10px; /* Space between elements */
+  }
+  .content-form{
+    width: 400px;
+  }
+  .content-value{
+    height: 500px;
+        /* display: flex;
+        justify-content: center;
+        align-items: center; */
+  }
+  label {
+  width: 150px; /* 设置宽度为150像素 */
+}
+</style>
+<body>
+    <div>
+        <div class="top">
+            <img class="logo" src="./image/logo.png" alt="">
+        </div>
+        <div class="content">
+            <div class="content-form">
+                <form onsubmit="handleSearch1(this)" id="donation">
+                    <label for="AMOUNT：">AMOUNT：</label> <input type="search" name="AMOUNT" placeholder="AMOUNT...">
+                    <label for="city">CAPTION：</label> <input type="text" name="CAPTION">
+                    <label for="name">G I V E R：</label> <input type="text" name="GIVER">
+                    <input type="submit" value="Submit my donation">
+                </form>
+            </div>
+        </div>
+        <div class="content-value">
+            
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    let url = 'http://127.0.0.1:5500/api'
+    
+function getUrlParams(key) {
+    let reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+    let r = window.location.search.substr(1)
+        .match(reg);
+    if (r != null)
+        return unescape(r[2]);
+    return null;
+}
+
+let FUNDRAISER_ID = getUrlParams('ID');
+let CAPTION = getUrlParams('CAPTION');
+
+if (CAPTION) {
+    var form = document.getElementById('donation');
+    console.log(form);
+
+    
+    form["CAPTION"].value = CAPTION;
+}
+
+function handleSearch1 (form) {
+    event.preventDefault();
+    let AMOUNT = form.AMOUNT.value;
+    let GIVER = form.GIVER.value;
+    console.log(AMOUNT,GIVER);
+    
+    if (AMOUNT === null || AMOUNT === undefined || AMOUNT === '') {
+        return alert('No amount')
+    }
+    if (GIVER === null || GIVER === undefined || GIVER === '') {
+        return alert('No GIVER')
+    }
+    let params = {
+        AMOUNT: AMOUNT,
+        GIVER: GIVER,
+        FUNDRAISER_ID: FUNDRAISER_ID,
+        DATE: getDate()
+    }
+    addDonation(params)
+}
+
+function addDonation(params) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST',url + `/addDonationData`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(params));
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                let data = JSON.parse(xhr.responseText);
+                if (data.code === 200) {
+                    alert('Thank you for your donation')
+                } else{
+                    alert(data.data)
+                }
+                
+            } else {
+                console.error('请求失败');
+            }
+        };
+}
+function getDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = ('0' + (now.getMonth() + 1)).slice(-2);
+    const day = ('0' + now.getDate()).slice(-2);
+    const hours = ('0' + now.getHours()).slice(-2);
+    const minutes = ('0' + now.getMinutes()).slice(-2);
+    const seconds = ('0' + now.getSeconds()).slice(-2);
+
+return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+
+}
+
+console.log(FUNDRAISER_ID,CAPTION);
+
+
+</script>
+
+
+</html>

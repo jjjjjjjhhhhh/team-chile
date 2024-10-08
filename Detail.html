@@ -151,7 +151,7 @@
 </body>
 
 <script type="text/javascript">
-    let url = 'http://127.0.0.1:3000'
+    let url = 'http://127.0.0.1:5500/api'
 
 
 let search = document.getElementById('Search')
@@ -168,7 +168,7 @@ function getUrlParams(key) {
     return null;
 }
 let id = getUrlParams('id');
-
+let data = []
 function getInfo(id) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET',url + `/getDataInfo?userId=${id}`, true);
@@ -176,7 +176,7 @@ function getInfo(id) {
         xhr.send();
         xhr.onload = function() {
             if (xhr.status === 200) {
-                let data = JSON.parse(xhr.responseText);
+                data = JSON.parse(xhr.responseText);
                 console.log(data)
                 addContentData(data.data)
             } else {
@@ -185,7 +185,10 @@ function getInfo(id) {
         };
 }
 function changeButton() {
-    alert('This feature is currently under construction！')
+    console.log(data);
+    
+    // alert('This feature is currently under construction！')
+     window.location.href = `./Donation.html?ID=${data.data[0].FUNDRAISER_ID}&CAPTION=${data.data[0].CAPTION}` 
 }
 function addContentData(data) {
         let content = document.querySelector('.content');
@@ -217,7 +220,7 @@ function addContentData(data) {
                     <div>
                         ORGANIZER：${item.ORGANIZER}  CITY：${item.CITY}
                     </div>
-                    <button onclick=changeButton()>Donate</button>
+                    <button onclick="changeButton()">Donate</button>
                 </div>
                 </div>
             </div>
