@@ -24,7 +24,7 @@
     }
     .content{
         /* width: 300px; */
-        height: 300px;
+        /* height: 300px; */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -81,11 +81,57 @@
     width: 300px;
   }
   .content-value{
-    height: 500px;
+    height: 600px;
         /* display: flex;
         justify-content: center;
         align-items: center; */
   }
+
+  form {  
+            display: flex;  
+            flex-direction: column;  
+        }  
+  
+   
+        label {  
+            font-size: 16px;  
+            margin-bottom: 5px;  
+            color: #333;  
+        }  
+  
+      
+        input[type="text"],  
+        input[type="email"],  
+        input[type="number"],  
+
+        input[type="submit"] {  
+            width: 100%;  
+            padding: 10px;  
+            margin-bottom: 15px;  
+            border: 1px solid #ccc;  
+            border-radius: 5px;  
+            box-sizing: border-box; 
+        }  
+  
+        input[type="submit"] {  
+            background-color: #4CAF50; 
+            color: white;  
+            border: none;  
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+        }  
+  
+        input[type="submit"]:hover {  
+            background-color: #45a049; 
+        }  
+
+        form > * + * {  
+            margin-top: 10px;  
+        }  
+
+
+
+
 </style>
 <body>
     <div>
@@ -94,14 +140,16 @@
         </div>
         <div class="content">
             <div class="content-form">
-                <form onsubmit="handleSearch(this)">
-                    <label for="name">title：<input type="search" name="name" placeholder="输入名称..."></label>
-                    <label for="city">city：<input type="search" name="city" placeholder="输入城市名称..."></label>
+                <form onsubmit="handleSearch(this)"> 
+                    <label for="name">title：<input type="text" name="name" placeholder="输入名称..." ></label>
+                    <label for="city">city：<input type="text" name="city" placeholder="输入城市名称..." ></label>
+                    <label for="ORGANIZER">ORGANIZER:<input type="text" name="ORGANIZER" placeholder="输入组织名称..."></label>
+                    <label for="CURRENT_FUNDING">CURRENT_FUNDING:<input type="number" min="0" name="CURRENT_FUNDING" placeholder="输入当前金额..."></label>
+                    <label for="VALUE">VALUE:<input type="text" name="VALUE" placeholder="输入活动内容..."></label>
                     <label for="status">status：
-                    
                     <input type="radio" name="gender" value="1">progress
                     <input type="radio" name="gender" value="2">Ended</label>
-    
+
                     <input type="submit" value="Search">
                     <input type="reset" value="Clear">
                 </form>
@@ -114,13 +162,23 @@
 </body>
 
 <script type="text/javascript">
-         let url = 'https://24275251.it.scu.edu.au/Server_api'
+       let url = 'http://127.0.0.1:8081/api'
 
 
     function handleSearch(form) {
         event.preventDefault();        
         let name = form.name.value;
         let city = form.city.value;
+        let ORGANIZER = form.ORGANIZER.value;
+        let CURRENT_FUNDING = Number(form.CURRENT_FUNDING.value); 
+        let VALUE = form.VALUE.value;
+
+        var CURRENT_FUNDINGRegex = /^\d+$/; 
+        if (!CURRENT_FUNDINGRegex.test(CURRENT_FUNDING)) {  
+           return alert("It must be a number!");  
+        }
+
+
 
         const selectedRadio = document.querySelector('input[name="gender"]:checked')
     
@@ -130,14 +188,17 @@
         let params = {
             type: selectedRadio ? selectedRadio.value : '',
             CAPTION: name ? name : '',
-            CITY: city ? city : ''
+            CITY: city ? city : '',
+            ORGANIZER: ORGANIZER? ORGANIZER : '',
+            CURRENT_FUNDING:CURRENT_FUNDING? CURRENT_FUNDING : '',
+            VALUE : VALUE? VALUE : ''
         }
         getSearch(params)
     }
 
     function getSearch(params) {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET',url + `/getTypeData?type=${params.type}&CAPTION=${params.CAPTION}&CITY=${params.CITY}`, true);
+        xhr.open('GET',url + `/getTypeData?type=${params.type}&CAPTION=${params.CAPTION}&CITY=${params.CITY}&ORGANIZER=${params.ORGANIZER}&CURRENT_FUNDING=${params.CURRENT_FUNDING}&VALUE=${params.VALUE}`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send();
         xhr.onload = function() {

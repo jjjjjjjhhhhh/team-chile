@@ -165,7 +165,7 @@
 </body>
 
 <script type="text/javascript">
-    let url = 'https://24275251.it.scu.edu.au/Server_api'
+     let url = 'http://127.0.0.1:8081/api'
 
 
 let search = document.getElementById('Search')
@@ -205,9 +205,9 @@ function getDonationList(id) {
         xhr.send();
         xhr.onload = function() {
             if (xhr.status === 200) {
-                data = JSON.parse(xhr.responseText);
-                console.log(data)
-                addDonation(data.data)   
+                let data1 = JSON.parse(xhr.responseText);
+                console.log(data1)
+                addDonation(data1.data)   
             } else {
                 console.error('请求失败');
             }

@@ -24,7 +24,7 @@
     }
     .content{
         /* width: 300px; */
-        height: 300px;
+        /* height: 300px; */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -89,6 +89,50 @@
   label {
   width: 150px; /* 设置宽度为150像素 */
 }
+
+
+form {  
+            display: flex;  
+            flex-direction: column;  
+        }  
+  
+   
+        label {  
+            font-size: 16px;  
+            margin-bottom: 5px;  
+            color: #333;  
+        }  
+  
+      
+        input[type="text"],  
+        input[type="email"],  
+        input[type="number"],  
+
+        input[type="submit"] {  
+            width: 100%;  
+            padding: 10px;  
+            margin-bottom: 15px;  
+            border: 1px solid #ccc;  
+            border-radius: 5px;  
+            box-sizing: border-box; 
+        }  
+  
+        input[type="submit"] {  
+            background-color: #4CAF50; 
+            color: white;  
+            border: none;  
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+        }  
+  
+        input[type="submit"]:hover {  
+            background-color: #45a049; 
+        }  
+
+        form > * + * {  
+            margin-top: 10px;  
+        }  
+
 </style>
 <body>
     <div>
@@ -98,7 +142,7 @@
         <div class="content">
             <div class="content-form">
                 <form onsubmit="handleSearch1(this)" id="donation">
-                    <label for="AMOUNT：">AMOUNT：</label> <input type="search" name="AMOUNT" placeholder="AMOUNT...">
+                    <label for="AMOUNT：">AMOUNT：</label> <input type="number" min="0" name="AMOUNT" placeholder="AMOUNT...">
                     <label for="city">CAPTION：</label> <input type="text" name="CAPTION">
                     <label for="name">G I V E R：</label> <input type="text" name="GIVER">
                     <input type="submit" value="Submit my donation">
@@ -112,7 +156,7 @@
 </body>
 
 <script type="text/javascript">
-    let url = 'https://24275251.it.scu.edu.au/Server_api'
+   let url = 'http://127.0.0.1:8081/api'
     
 function getUrlParams(key) {
     let reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
