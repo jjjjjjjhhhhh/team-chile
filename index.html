@@ -137,10 +137,16 @@
                             CURRENT_FUNDING：<span class="main-value"> ￥${item.CURRENT_FUNDING}元  </span>  
                         </div>
                     </div>
-                    <div>
-                        ${item.ACTIVE_CATEGORY_ID == 1? 'progress' : item.ACTIVE_CATEGORY_ID == 2? 'Ended' : item.ACTIVE_CATEGORY_ID == 3? 'Removed' : 'NotStarted'}
 
+                    <div class="main-amount">
+                          <div class="main-amount-flex">
+                            CATEGORY：${item.ACTIVE_CATEGORY_ID == 1? 'education' : item.ACTIVE_CATEGORY_ID == 2? 'social impact' : item.ACTIVE_CATEGORY_ID == 3? 'crisis relief' : 'medical'}
+                        </div>
+                        <div class="main-amount-flex">
+                            <span style="margin-left: 10px;">Active: ${item.Active === 1? 'pause' : 'active'}</span>
+                        </div>
                     </div>
+
                     <div class="main-content">
                     ${item.VALUE}
                     </div>
